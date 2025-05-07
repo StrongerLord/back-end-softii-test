@@ -1,11 +1,25 @@
-import express, { Request, Response } from "express";
+import express from "express";
+import cors from "cors";
+import dotenv from "dotenv";
+import mongoose from "mongoose";
+import tipsRoutes from "./routes/tips.routes";
+
+dotenv.config();
+
 const app = express();
-const port = 3000;
 
-app.get("/", (req: Request, res: Response) => {
-  res.send("Hello, TypeScript and Express!");
-});
+app.use(
+  cors({
+    origin: "https://front-end-softii-test.vercel.app",
+  })
+);
+app.use(express.json());
 
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
-});
+mongoose
+  .connect(process.env.MONGO_URI as string)
+  .then(() => console.log("✅ Connected to MongoDB"))
+  .catch((err) => console.error("❌ MongoDB connection error:", err));
+
+app.use("/tips", tipsRoutes);
+
+export default app;
