@@ -10,16 +10,12 @@ export const getTips = async (_req: Request, res: Response) => {
   }
 };
 
-export const postTips = async (
-  req: Request,
-  res: Response
-): Promise<Response | undefined> => {
+export const postTips = async (req: Request, res: Response): Promise<void> => {
   const orders = req.body;
 
   if (!Array.isArray(orders)) {
-    return res
-      .status(400)
-      .json({ error: "Payload must be an array of orders" });
+    res.status(400).json({ error: "Payload must be an array of orders" });
+    return;
   }
 
   try {
